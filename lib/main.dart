@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 import 'screens/concierge_screen.dart';
@@ -61,43 +60,13 @@ class _SplashAppState extends State<_SplashApp> with SingleTickerProviderStateMi
       themeMode: ThemeMode.dark,
       home: Scaffold(
         backgroundColor: VK.bg,
-        body: Center(
-          child: FadeTransition(
-            opacity: _fade,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Wejh',
-                      style: GoogleFonts.cairo(
-                        fontSize: 52,
-                        fontWeight: FontWeight.w800,
-                        color: VK.sea,
-                        height: 1,
-                      ),
-                    ),
-                    Transform.rotate(
-                      angle: -0.4,
-                      child: const Icon(Icons.flight, size: 50, color: VK.sea),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  'وجهة',
-                  style: GoogleFonts.cairo(
-                    fontSize: 22,
-                    fontWeight: FontWeight.w600,
-                    color: VK.ink2,
-                    height: 1,
-                  ),
-                ),
-              ],
-            ),
+        body: FadeTransition(
+          opacity: _fade,
+          child: Image.asset(
+            'assets/images/splash.png',
+            fit: BoxFit.cover,
+            width: double.infinity,
+            height: double.infinity,
           ),
         ),
       ),
@@ -156,9 +125,9 @@ class Shell extends StatelessWidget {
             onDestinationSelected: s.setTab,
             labelType: NavigationRailLabelType.all,
             backgroundColor: Theme.of(context).colorScheme.surface,
-            leading: const Padding(
-              padding: EdgeInsets.symmetric(vertical: 16),
-              child: WejhaLogo(size: 20),
+            leading: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              child: Image.asset('assets/images/logo_stacked.png', width: 80),
             ),
             destinations: [
               for (final d in dests)

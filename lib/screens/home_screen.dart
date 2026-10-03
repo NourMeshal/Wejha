@@ -68,7 +68,12 @@ class HomeScreen extends StatelessWidget {
       ]);
     }
 
+    final isWide = MediaQuery.sizeOf(context).width >= 900;
     return PageBody(children: [
+      if (!isWide) ...[
+        const WejhaLogo(height: 48),
+        const SizedBox(height: 16),
+      ],
       ...top,
       const SizedBox(height: 28),
       Text(s.t('onThisWeek'), style: tt.titleLarge),

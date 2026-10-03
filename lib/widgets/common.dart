@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import '../models/trip.dart';
 import '../state/app_state.dart';
@@ -68,33 +67,15 @@ class ArtTile extends StatelessWidget {
 }
 
 
-/// App wordmark. "Wejh" in bold + a tilted plane that reads as the letter 'a'.
+/// App wordmark using the official Wejha brand asset.
+/// [height] controls the rendered height; width scales proportionally.
 class WejhaLogo extends StatelessWidget {
-  final double size;
-  const WejhaLogo({super.key, this.size = 22});
+  final double height;
+  const WejhaLogo({super.key, this.height = 36});
 
   @override
   Widget build(BuildContext context) {
-    final primary = Theme.of(context).colorScheme.primary;
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Text(
-          'Wejh',
-          style: GoogleFonts.cairo(
-            fontSize: size,
-            fontWeight: FontWeight.w800,
-            color: primary,
-            height: 1,
-          ),
-        ),
-        Transform.rotate(
-          angle: -0.4,
-          child: Icon(Icons.flight, size: size * 0.95, color: VK.sea),
-        ),
-      ],
-    );
+    return Image.asset('assets/images/logo_stacked.png', height: height);
   }
 }
 
