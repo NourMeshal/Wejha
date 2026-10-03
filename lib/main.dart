@@ -10,8 +10,8 @@ import 'screens/trip_screen.dart';
 import 'state/app_state.dart';
 import 'theme.dart';
 
-// 15 frames × 180 ms each = 2700 ms animation, then hold frame 15 for 500 ms.
-const _kSplashMs = 3200;
+// 14 frames × ~200 ms each = 2800 ms animation, then hold frame 14 briefly.
+const _kSplashMs = 3000;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,9 +36,9 @@ class _SplashApp extends StatefulWidget {
 
 class _SplashAppState extends State<_SplashApp>
     with SingleTickerProviderStateMixin {
-  static const _frames = 15;
-  // Frames play over the first 84 % of the total duration, then hold on frame 15.
-  static const _playWindow = 0.84;
+  static const _frames = 14; // frame 15 (app-icon square) excluded
+  // Frames play over first 90% of duration, then hold on frame 14 briefly.
+  static const _playWindow = 0.90;
 
   late final AnimationController _ctrl;
 
@@ -73,11 +73,17 @@ class _SplashAppState extends State<_SplashApp>
             final idx = (t * (_frames - 1)).floor().clamp(0, _frames - 1);
             final num = (idx + 1).toString().padLeft(2, '0');
 
-            return SizedBox.expand(
-              child: Image.asset(
-                'assets/images/splash_$num.png',
-                fit: BoxFit.cover,
-                gaplessPlayback: true, // no flicker between frames
+            final size = MediaQuery.sizeOf(context).shortestSide * 0.72;
+            return Center(
+              child: SizedBox(
+                width: size,
+                height: size,
+                child: Image.asset(
+                  'assets/images/splash_$num.png',
+                  fit: BoxFit.cover,
+                  filterQuality: FilterQuality.high,
+                  gaplessPlayback: true,
+                ),
               ),
             );
           },
