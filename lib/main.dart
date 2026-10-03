@@ -14,12 +14,15 @@ import 'theme.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // Show the splash immediately, then load data in the background.
   runApp(const _SplashApp());
-  await initializeDateFormatting('en');
-  await initializeDateFormatting('ar');
+  // Run init + minimum splash time in parallel so we never show less than 2s.
   final state = AppState();
-  await state.load();
+  await Future.wait([
+    initializeDateFormatting('en'),
+    initializeDateFormatting('ar'),
+    state.load(),
+    Future.delayed(const Duration(milliseconds: 2000)),
+  ]);
   runApp(AppScope(state: state, child: const WejhaApp()));
 }
 
