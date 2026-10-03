@@ -3,7 +3,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 import 'screens/concierge_screen.dart';
-import 'widgets/common.dart';
 import 'screens/discover_screen.dart';
 import 'screens/home_screen.dart';
 import 'screens/profile_screen.dart';
@@ -34,39 +33,67 @@ class _SplashApp extends StatefulWidget {
   State<_SplashApp> createState() => _SplashAppState();
 }
 
-class _SplashAppState extends State<_SplashApp> with SingleTickerProviderStateMixin {
+class _SplashAppState extends State<_SplashApp> with TickerProviderStateMixin {
   late final AnimationController _ctrl;
   late final Animation<double> _fade;
+  late final Animation<double> _scale;
+
+  late final AnimationController _pulseCtrl;
+  late final Animation<double> _pulse;
 
   @override
   void initState() {
     super.initState();
-    _ctrl = AnimationController(vsync: this, duration: const Duration(milliseconds: 800));
-    _fade = CurvedAnimation(parent: _ctrl, curve: Curves.easeIn);
-    _ctrl.forward();
+
+    // Entrance: fade + scale up from 0.7 → 1.0 over 900ms
+    _ctrl = AnimationController(vsync: this, duration: const Duration(milliseconds: 900));
+    _fade = CurvedAnimation(parent: _ctrl, curve: Curves.easeOut);
+    _scale = Tween<double>(begin: 0.7, end: 1.0).animate(
+      CurvedAnimation(parent: _ctrl, curve: Curves.easeOutBack),
+    );
+
+    // Subtle breathe/pulse after entrance
+    _pulseCtrl = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1200),
+    );
+    _pulse = Tween<double>(begin: 1.0, end: 1.06).animate(
+      CurvedAnimation(parent: _pulseCtrl, curve: Curves.easeInOut),
+    );
+
+    _ctrl.forward().then((_) => _pulseCtrl.repeat(reverse: true));
   }
 
   @override
   void dispose() {
     _ctrl.dispose();
+    _pulseCtrl.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.sizeOf(context).shortestSide * 0.45;
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: buildTheme(),
       themeMode: ThemeMode.dark,
       home: Scaffold(
         backgroundColor: VK.bg,
-        body: FadeTransition(
-          opacity: _fade,
-          child: Image.asset(
-            'assets/images/splash.png',
-            fit: BoxFit.cover,
-            width: double.infinity,
-            height: double.infinity,
+        body: Center(
+          child: FadeTransition(
+            opacity: _fade,
+            child: ScaleTransition(
+              scale: _scale,
+              child: ScaleTransition(
+                scale: _pulse,
+                child: Image.asset(
+                  'assets/images/logo_icon.png',
+                  width: size,
+                  height: size,
+                ),
+              ),
+            ),
           ),
         ),
       ),
