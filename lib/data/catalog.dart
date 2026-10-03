@@ -370,6 +370,76 @@ final List<Listing> places = [
   Listing(id: 'fine-waterfront', type: ListingType.restaurant, en: 'Waterfront fine dining', ar: 'مطعم راقٍ على البحر', cat: 'fine_dining', tags: ['fine_dining'], area: 'Salmiya', lat: 29.3445, lng: 48.0880, dur: 105, price: 38, pop: .6, meals: ['d'], hours: h(1140, 1410), motif: 'plate', demo: true, imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Sunset_from_Umm_al_maradem_island_Kuwait.jpg/960px-Sunset_from_Umm_al_maradem_island_Kuwait.jpg', desc: 'Tasting menu with Gulf views. Demo listing.', descAr: 'قائمة تذوق بإطلالة على الخليج. قائمة تجريبية.'),
   Listing(id: 'kw-breakfast', type: ListingType.restaurant, en: 'Kuwaiti breakfast house', ar: 'بيت الريوق الكويتي', cat: 'kuwaiti_food', tags: ['kuwaiti_food', 'culture'], area: 'Kuwait City', lat: 29.3720, lng: 47.9840, dur: 60, price: 4, pop: .6, meals: ['b'], hours: h(390, 720), motif: 'plate', demo: true, imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/Balaleet_2019.jpg/960px-Balaleet_2019.jpg', desc: 'Balaleet, chami cheese and fresh bread. Demo listing.', descAr: 'بلاليط وجامي وخبز طازج. قائمة تجريبية.'),
   Listing(id: 'seafood-grill', type: ListingType.restaurant, en: 'Seafood grill by the fish market', ar: 'مشويات بحرية قرب سوق السمك', cat: 'kuwaiti_food', tags: ['kuwaiti_food'], area: 'Sharq', lat: 29.3840, lng: 48.0010, dur: 75, price: 11, veg: false, pop: .55, meals: ['l', 'd'], hours: h(720, 1410), motif: 'plate', demo: true, imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/DSCF0708_Crispy_golden-brown_whole_fish_grilled_and_stacked_on_a_tray_ready_to_serve_at_a_bustling_night_market.jpg/960px-DSCF0708_Crispy_golden-brown_whole_fish_grilled_and_stacked_on_a_tray_ready_to_serve_at_a_bustling_night_market.jpg', desc: "Pick the day's catch and have it grilled. Demo listing.", descAr: 'اختر صيد اليوم واطلب شويه. قائمة تجريبية.'),
+
+  // ── New restaurants (confirmed open, real photos) ─────────────────────────
+
+  // Paparazzi — opened Feb 2025, Italian, Al Salhiya, dinner only
+  Listing(id: 'paparazzi', type: ListingType.restaurant,
+      en: 'Paparazzi', ar: 'باباراتزي',
+      cat: 'fine_dining', tags: ['fine_dining', 'luxury'],
+      area: 'Kuwait City', lat: 29.3633, lng: 47.9655,
+      dur: 90, price: 15, indoor: true, acc: true, pop: .90,
+      meals: ['d'], hours: h(1080, 1440),
+      motif: 'plate', demo: true,
+      imageUrl: 'https://248am.com/images/2025/02/pap1.jpg',
+      photos: [
+        'https://248am.com/images/2025/02/pap2.jpg',
+        'https://248am.com/images/2025/02/pap3.jpg',
+        'https://248am.com/images/2025/02/pap4.jpg',
+        'https://www.latq.fr/wp-content/uploads/2025/04/UNE-PAPARAZZI-RESTAURANT.jpg',
+        'https://www.tasteandflavors.com/wp-content/uploads/2025/09/IMG_1758.jpeg',
+        'https://www.tasteandflavors.com/wp-content/uploads/2025/09/IMG_1773.jpeg',
+      ],
+      desc: '1970s Milan-inspired Italian restaurant in Al Salhiya — wood-fired pizza, truffle fettuccini and fresh wild seabass. Dinner only; reservations via Instagram @paparazzi.kw.',
+      descAr: 'مطعم إيطالي مستوحى من ميلانو السبعينيات في السالحية — بيتزا حطبية وفيتوتشيني الكمأة وسمك القاروص الطازج. عشاء فقط؛ الحجز عبر انستغرام @paparazzi.kw.'),
+
+  // Slider Station — conveyor-belt sliders on Gulf Road since 2007
+  Listing(id: 'slider-station', type: ListingType.restaurant,
+      en: 'Slider Station', ar: 'سلايدر ستيشن',
+      cat: 'cafes', tags: ['family', 'kids', 'cafes'],
+      area: 'Gulf Road', lat: 29.3764, lng: 47.9692,
+      dur: 60, price: 7, indoor: true, acc: true, pop: .85,
+      meals: ['b', 'l', 'd'], hours: h(540, 1380),
+      motif: 'plate', demo: false,
+      imageUrl: 'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/08/8b/e4/d0/slider-station.jpg?w=1200&h=900&s=1',
+      logoUrl: 'https://media-cdn.tripadvisor.com/media/photo-o/27/52/3a/41/logo.jpg',
+      photos: [
+        'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0c/82/74/26/egg-benedict.jpg?w=1200&h=900&s=1',
+        'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/09/fc/41/81/best-sliders-ever.jpg?w=1200&h=900&s=1',
+        'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2a/88/73/59/interiors.jpg?w=1200&h=900&s=1',
+      ],
+      desc: "The world's first conveyor-belt burger restaurant — a Kuwait City institution since 2007. Fun for all ages.",
+      descAr: 'أول مطعم برغر في العالم بالسير المتحرك — معلم كويتي راسخ منذ ٢٠٠٧. ممتع لجميع الأعمار.'),
+
+  // The Meat Co — South African steakhouse at 360 Mall
+  Listing(id: 'meat-co', type: ListingType.restaurant,
+      en: 'The Meat Co', ar: 'ذا ميت كو',
+      cat: 'fine_dining', tags: ['fine_dining', 'luxury'],
+      area: 'Zahra', lat: 29.2697, lng: 47.9907,
+      dur: 105, price: 25, indoor: true, acc: true, pop: .78,
+      meals: ['l', 'd'], hours: h(720, 1380),
+      motif: 'plate', demo: false,
+      imageUrl: 'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/06/e4/f8/71/pepper-steak-house.jpg?w=1200&h=900&s=1',
+      menuUrl: 'https://www.themeatco.com/location/kuwait-al-zahra/',
+      desc: 'South African steakhouse at 360 Mall — wagyu, tomahawk cuts and peri-peri chicken with views over the mall.',
+      descAr: 'مطعم ستيك جنوب أفريقي في مجمع ٣٦٠ — واغيو وتوماهوك وبيري-بيري بإطلالة على المجمع.'),
+
+  // Karak House — classic karak tea cafe in Kuwait City
+  Listing(id: 'karak-house', type: ListingType.restaurant,
+      en: 'Karak House', ar: 'كرك هاوس',
+      cat: 'cafes', tags: ['cafes', 'kuwaiti_food', 'culture'],
+      area: 'Kuwait City', lat: 29.3754, lng: 47.9781,
+      dur: 30, price: 1, indoor: false, pop: .82,
+      meals: ['b', 's'], hours: h(390, 1440),
+      motif: 'cup', demo: false,
+      imageUrl: 'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/1c/5e/47/35/karak-house-kuwait.jpg?w=1200&h=900&s=1',
+      photos: [
+        'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/1c/5e/11/6e/caption.jpg?w=1200&h=900&s=1',
+        'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/09/a7/84/60/karak-house.jpg?w=1200&h=900&s=1',
+      ],
+      menuUrl: 'https://www.talabat.com/kuwait/karak-house',
+      desc: "Kuwait's favourite karak tea spot — charcoal-brewed karak, halloumi za'atar chapati and fresh juices. Open from 6:30 AM.",
+      descAr: "وجهة الكرك المفضلة في الكويت — كرك بالفحم وحلوم مع خبز الزعتر وعصائر طازجة. يفتح من ٦:٣٠ صباحاً."),
 ];
 
 final List<Listing> events = [
