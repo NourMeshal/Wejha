@@ -42,6 +42,7 @@ class Listing {
   final String? bookUrl;
   // imagery
   final String? imageUrl;
+  final String? menuUrl;
 
   const Listing({
     required this.id,
@@ -76,6 +77,7 @@ class Listing {
     this.provider,
     this.bookUrl,
     this.imageUrl,
+    this.menuUrl,
   });
 
   bool get isEvent => type == ListingType.event;
@@ -225,7 +227,7 @@ final List<Listing> places = [
   Listing(id: 'tareq-rajab', type: ListingType.place, en: 'Tareq Rajab Museum', ar: 'متحف طارق رجب', cat: 'museums', tags: ['museums', 'art', 'heritage'], area: 'Jabriya', lat: 29.3220, lng: 48.0270, dur: 75, price: 2, child: 1, acc: false, pop: .6, hours: h(540, 1140), except: {5: []}, motif: 'frame', imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Jabriya_Tareq_Rajab_Museum_of_Calligraphy_1.jpg/800px-Jabriya_Tareq_Rajab_Museum_of_Calligraphy_1.jpg', desc: 'A private collection of Islamic art, calligraphy and jewellery.', descAr: 'مجموعة خاصة من الفنون الإسلامية والخط والمجوهرات.'),
   Listing(id: 'avenues', type: ListingType.place, en: 'The Avenues', ar: 'الأفنيوز', cat: 'shopping', tags: ['shopping', 'luxury', 'family', 'cafes'], area: 'Al Rai', lat: 29.3036, lng: 47.9365, dur: 150, price: 0, pop: .95, hours: h(600, 1380), except: {5: h(780, 1380)}, motif: 'bag', imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/The_Avenues_Kuwait.jpg/800px-The_Avenues_Kuwait.jpg', desc: 'One of the largest malls in the region, with a luxury district.', descAr: 'من أكبر المجمعات في المنطقة، مع منطقة فاخرة.'),
   Listing(id: 'mall-360', type: ListingType.place, en: '360 Mall', ar: 'مجمع ٣٦٠', cat: 'shopping', tags: ['shopping', 'luxury'], area: 'Zahra', lat: 29.2697, lng: 47.9907, dur: 120, price: 0, pop: .75, hours: h(600, 1380), except: {5: h(780, 1380)}, motif: 'bag', imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/360_Mall_in_Kuwait_City.jpg/800px-360_Mall_in_Kuwait_City.jpg', desc: 'An upscale mall known for its indoor vertical garden.', descAr: 'مجمع راقٍ معروف بحديقته العمودية الداخلية.'),
-  Listing(id: 'marina-crescent', type: ListingType.place, en: 'Marina Crescent waterfront', ar: 'هلال المارينا', cat: 'cafes', tags: ['cafes', 'desserts', 'photography', 'beaches'], area: 'Salmiya', lat: 29.3420, lng: 48.0700, dur: 75, price: 0, indoor: false, pop: .7, hours: h(480, 1440), motif: 'waves', imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Marina_crescent_at_night.jpg/800px-Marina_crescent_at_night.jpg', desc: 'A seafront promenade lined with cafés.', descAr: 'ممشى بحري تصطف عليه المقاهي.'),
+  Listing(id: 'marina-crescent', type: ListingType.place, en: 'Marina Crescent waterfront', ar: 'هلال المارينا', cat: 'cafes', tags: ['cafes', 'desserts', 'photography', 'beaches'], area: 'Salmiya', lat: 29.3420, lng: 48.0700, dur: 75, price: 0, indoor: false, pop: .7, hours: h(480, 1440), motif: 'waves', imageUrl: 'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/09/25/7f/a8/tche-tche-cafe.jpg?w=1200&h=900&s=1', desc: 'A seafront promenade lined with cafés.', descAr: 'ممشى بحري تصطف عليه المقاهي.'),
   Listing(id: 'green-island', type: ListingType.place, en: 'Green Island', ar: 'الجزيرة الخضراء', cat: 'family', tags: ['family', 'wellness', 'kids'], area: 'Dasman', lat: 29.3815, lng: 48.0095, dur: 60, price: .5, child: .25, indoor: false, pop: .55, hours: h(480, 1320), motif: 'leaf', imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Green_island_kuwait.JPG/800px-Green_island_kuwait.JPG', desc: 'A small island park off Gulf Road with play areas.', descAr: 'جزيرة صغيرة قبالة شارع الخليج فيها ألعاب.'),
   Listing(id: 'messila-beach', type: ListingType.place, en: 'Messila beach', ar: 'شاطئ المسيلة', cat: 'beaches', tags: ['beaches', 'wellness'], area: 'Messila', lat: 29.2685, lng: 48.0980, dur: 120, price: 0, indoor: false, acc: false, pop: .55, hours: h(420, 1140), motif: 'waves', imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Low_Tide_Messila_beach_Kuwait.jpg/800px-Low_Tide_Messila_beach_Kuwait.jpg', desc: 'A sandy stretch south of Salmiya.', descAr: 'شاطئ رملي جنوب السالمية.'),
   Listing(id: 'desert-camp', type: ListingType.place, en: 'Desert camp evening', ar: 'أمسية في مخيم بري', cat: 'desert', tags: ['desert', 'adventure', 'culture', 'photography'], area: 'Kabd', lat: 29.15, lng: 47.75, dur: 240, price: 35, child: 20, indoor: false, acc: false, pop: .8, months: [11, 12, 1, 2, 3], hours: h(900, 1380), motif: 'dunes', demo: true, imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/Camels_in_the_Kuwaiti_desert.jpg/800px-Camels_in_the_Kuwaiti_desert.jpg', desc: 'Camp season in the cooler months: dunes, Arabic coffee, dinner by the fire.', descAr: 'موسم المخيمات في الأشهر الباردة: كثبان وقهوة عربية وعشاء حول النار.'),
@@ -250,7 +252,8 @@ final List<Listing> places = [
       meals: ['d'], hours: h(1020, 1440), except: {0: []},
       motif: 'plate', demo: true,
       provider: 'opentable', bookUrl: 'https://www.opentable.com/r/sintoho-al-mirqab-1',
-      imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/Sushi_food_in_Tokyo%2C_Japan.jpg/960px-Sushi_food_in_Tokyo%2C_Japan.jpg',
+      imageUrl: 'https://images.pexels.com/photos/33712148/pexels-photo-33712148/free-photo-of-exquisite-nigiri-sushi-on-elegant-plate.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+      menuUrl: 'https://www.fourseasons.com/kuwait/dining/restaurants/sintoho/',
       desc: 'Japanese and Southeast Asian at the 21st floor of the Four Seasons Hotel — robata grill, sushi and teppanyaki with panoramic city views. Reserve on OpenTable.',
       descAr: 'مطبخ ياباني وجنوب شرق آسيوي في الطابق ٢١ من فندق فور سيزونز — مشاوي روباتا وسوشي وتيباياكي مع إطلالات بانورامية. الحجز عبر OpenTable.'),
   //
@@ -263,7 +266,8 @@ final List<Listing> places = [
       meals: ['l', 'd'], hours: h(720, 1380),
       motif: 'plate', demo: false,
       provider: 'opentable', bookUrl: 'https://www.opentable.com/r/dai-forni-al-mirqab',
-      imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Punch_Neapolitan_Pizza_%282257039638%29.jpg/960px-Punch_Neapolitan_Pizza_%282257039638%29.jpg',
+      imageUrl: 'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/11/cc/0a/02/dai-forni-restaurant.jpg?w=1200&h=900&s=1',
+      menuUrl: 'https://www.fourseasons.com/kuwait/dining/restaurants/dai-forni/',
       desc: 'Wood-fired pizzas and handmade pasta from three giant copper-sheathed ovens on the 21st floor of the Four Seasons. Casual yet elegant. Reserve on OpenTable.',
       descAr: 'بيتزا من الفرن الحطبي ومعكرونة يدوية من ثلاثة أفران نحاسية ضخمة في الطابق ٢١ من فور سيزونز. أجواء غير رسمية وأنيقة. الحجز عبر OpenTable.'),
   //
@@ -277,7 +281,7 @@ final List<Listing> places = [
       meals: ['l', 'd'], hours: h(720, 1380),
       motif: 'plate', demo: false,
       provider: 'opentable', bookUrl: 'https://www.opentable.com/r/jamawar-indian-restaurant-kuwait-city',
-      imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Hyderabad_Chicken_Dum_Biryani.jpg/960px-Hyderabad_Chicken_Dum_Biryani.jpg',
+      imageUrl: 'https://qcqxcffgfdsqfrwwvabh.supabase.co/storage/v1/object/public/restaurants/jamawar-indian-restaurant-salmiya/images/jamawar-indian-restaurant-salmiya-warm-lighting-wooden-interior-dining-room.jpg',
       desc: 'Authentic Indian restaurant consistently rated among Kuwait City\'s top tables — kebabs, biryani and slow-cooked curries. Rated 4.9 on OpenTable.',
       descAr: 'مطعم هندي أصيل يُصنَّف باستمرار ضمن أفضل مطاعم الكويت — كباب وبيريانى وكاري مطبوخ ببطء. تقييم ٤.٩ على OpenTable.'),
   //
@@ -292,13 +296,14 @@ final List<Listing> places = [
       meals: ['l', 'd'], hours: h(720, 1380),
       motif: 'plate', demo: false,
       provider: 'opentable', bookUrl: 'https://www.opentable.com/r/shabestan-iranian-restaurant-kuwait-city',
-      imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Persian_grilled_kebab_with_saffron_rice_and_assorted_side_dishes.jpg/500px-Persian_grilled_kebab_with_saffron_rice_and_assorted_side_dishes.jpg',
+      imageUrl: 'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0e/98/75/ff/shabestan-iranian-restaurant.jpg?w=1200&h=900&s=1',
+      menuUrl: 'https://www.talabat.com/kuwait/shabestan',
       desc: 'Authentic Persian cuisine — freshly prepared grills and home-style dishes. Rated #14 of 564 Kuwait City restaurants on TripAdvisor. Reserve on OpenTable.',
       descAr: 'مطبخ إيراني أصيل — مشاوي طازجة وأطباق منزلية الطراز. مصنّف رقم ١٤ من ٥٦٤ مطعماً في الكويت على TripAdvisor. الحجز عبر OpenTable.'),
   //
-  Listing(id: 'freej-swaileh', type: ListingType.restaurant, en: 'Freej Swaileh', ar: 'فريج صويلح', cat: 'kuwaiti_food', tags: ['kuwaiti_food', 'culture'], area: 'Salmiya', lat: 29.3350, lng: 48.0650, dur: 75, price: 6, pop: .85, meals: ['b', 'l', 'd'], hours: h(420, 1440), motif: 'plate', imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Kabsa.jpg/960px-Kabsa.jpg', desc: 'Home-style Kuwaiti dishes such as machboos.', descAr: 'أطباق كويتية منزلية مثل المچبوس.'),
-  Listing(id: 'dar-hamad', type: ListingType.restaurant, en: 'Dar Hamad', ar: 'دار حمد', cat: 'kuwaiti_food', tags: ['kuwaiti_food', 'fine_dining', 'culture'], area: 'Sharq', lat: 29.3870, lng: 47.9990, dur: 90, price: 16, pop: .75, meals: ['l', 'd'], hours: h(720, 1410), motif: 'plate', imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Kabsa_%286486384335%29.jpg/960px-Kabsa_%286486384335%29.jpg', desc: 'Kuwaiti and Gulf cooking near the waterfront.', descAr: 'مطبخ كويتي وخليجي قرب الواجهة البحرية.'),
-  Listing(id: 'mais-alghanim', type: ListingType.restaurant, en: 'Mais Alghanim', ar: 'ميس الغانم', cat: 'kuwaiti_food', tags: ['kuwaiti_food'], area: 'Dasman', lat: 29.3880, lng: 48.0025, dur: 75, price: 9, indoor: false, pop: .8, meals: ['l', 'd'], hours: h(720, 1440), motif: 'plate', imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Kuwait_City_Kuwait_Towers_Panoramic_View_4.jpg/960px-Kuwait_City_Kuwait_Towers_Panoramic_View_4.jpg', desc: 'A long-running Arabic grill by the sea near Kuwait Towers.', descAr: 'مطعم مشويات عربي عريق على البحر قرب الأبراج.'),
+  Listing(id: 'freej-swaileh', type: ListingType.restaurant, en: 'Freej Swaileh', ar: 'فريج صويلح', cat: 'kuwaiti_food', tags: ['kuwaiti_food', 'culture'], area: 'Salmiya', lat: 29.3350, lng: 48.0650, dur: 75, price: 6, pop: .85, meals: ['b', 'l', 'd'], hours: h(420, 1440), motif: 'plate', imageUrl: 'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/12/3f/44/6f/ground-floor-dining-room.jpg?w=1200&h=900&s=1', menuUrl: 'https://www.freejswalieh.com/menu', desc: 'Home-style Kuwaiti dishes such as machboos.', descAr: 'أطباق كويتية منزلية مثل المچبوس.'),
+  Listing(id: 'dar-hamad', type: ListingType.restaurant, en: 'Dar Hamad', ar: 'دار حمد', cat: 'kuwaiti_food', tags: ['kuwaiti_food', 'fine_dining', 'culture'], area: 'Sharq', lat: 29.3870, lng: 47.9990, dur: 90, price: 16, pop: .75, meals: ['l', 'd'], hours: h(720, 1410), motif: 'plate', imageUrl: 'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/24/67/ee/74/inside-the-restaurant.jpg?w=1200&h=900&s=1', menuUrl: 'https://www.orderdarhamad.com/en', desc: 'Kuwaiti and Gulf cooking near the waterfront.', descAr: 'مطبخ كويتي وخليجي قرب الواجهة البحرية.'),
+  Listing(id: 'mais-alghanim', type: ListingType.restaurant, en: 'Mais Alghanim', ar: 'ميس الغانم', cat: 'kuwaiti_food', tags: ['kuwaiti_food'], area: 'Dasman', lat: 29.3880, lng: 48.0025, dur: 75, price: 9, indoor: false, pop: .8, meals: ['l', 'd'], hours: h(720, 1440), motif: 'plate', imageUrl: 'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0e/79/d3/8d/interior.jpg?w=1200&h=900&s=1', menuUrl: 'https://qrmenu.maisalghanim.com/?b=5948', desc: 'A long-running Arabic grill by the sea near Kuwait Towers.', descAr: 'مطعم مشويات عربي عريق على البحر قرب الأبراج.'),
   Listing(id: 'souq-cafe', type: ListingType.restaurant, en: 'Karak & gahwa in the souq', ar: 'كرك وقهوة في السوق', cat: 'cafes', tags: ['cafes', 'kuwaiti_food', 'culture'], area: 'Kuwait City', lat: 29.3705, lng: 47.9740, dur: 45, price: 2, indoor: false, pop: .7, meals: ['b', 's'], hours: h(420, 1380), motif: 'cup', imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Karak_tea_in_Kuwait_2.jpg/500px-Karak_tea_in_Kuwait_2.jpg', desc: 'Karak tea and Arabic coffee inside Souq Al-Mubarakiya.', descAr: 'شاي كرك وقهوة عربية داخل سوق المباركية.'),
   Listing(id: 'fine-waterfront', type: ListingType.restaurant, en: 'Waterfront fine dining', ar: 'مطعم راقٍ على البحر', cat: 'fine_dining', tags: ['fine_dining'], area: 'Salmiya', lat: 29.3445, lng: 48.0880, dur: 105, price: 38, pop: .6, meals: ['d'], hours: h(1140, 1410), motif: 'plate', demo: true, imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Sunset_from_Umm_al_maradem_island_Kuwait.jpg/960px-Sunset_from_Umm_al_maradem_island_Kuwait.jpg', desc: 'Tasting menu with Gulf views. Demo listing.', descAr: 'قائمة تذوق بإطلالة على الخليج. قائمة تجريبية.'),
   Listing(id: 'kw-breakfast', type: ListingType.restaurant, en: 'Kuwaiti breakfast house', ar: 'بيت الريوق الكويتي', cat: 'kuwaiti_food', tags: ['kuwaiti_food', 'culture'], area: 'Kuwait City', lat: 29.3720, lng: 47.9840, dur: 60, price: 4, pop: .6, meals: ['b'], hours: h(390, 720), motif: 'plate', demo: true, imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/Balaleet_2019.jpg/960px-Balaleet_2019.jpg', desc: 'Balaleet, chami cheese and fresh bread. Demo listing.', descAr: 'بلاليط وجامي وخبز طازج. قائمة تجريبية.'),

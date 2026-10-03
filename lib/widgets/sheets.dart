@@ -40,61 +40,123 @@ Future<void> showDetails(BuildContext context, String id, {String? occId, bool c
   final Occurrence? occ = occId == null
       ? null
       : occurrencesOn(occId.split('@')[1]).where((o) => o.id == occId).firstOrNull;
-  return _sheet(context, (ctx) {
-    final tt = Theme.of(ctx).textTheme;
-    final rows = <(String, String)>[
-      (c.isEvent ? (s.isAr ? 'المكان' : 'Venue') : (s.isAr ? 'المنطقة' : 'Area'),
-          c.isEvent ? venues[c.venue]!.name(s.lang) : s.area(c.area)),
-      if (occ != null) (s.isAr ? 'الموعد' : 'When', '${s.date(occ.date)}, ${s.time(occ.start)} – ${s.time(occ.end)}'),
-      if (occ != null) (s.isAr ? 'التوفر' : 'Availability', occ.seats > 0 ? s.t('seatsLeft', {'n': occ.seats}) : s.t('soldOut')),
-      (s.isAr ? 'المدة' : 'Duration', '${c.dur} ${s.isAr ? 'دقيقة' : 'min'}'),
-      (s.isAr ? 'السعر' : 'Price', '${s.kwd(c.price)} ${c.price > 0 ? s.t('perPerson') : ''}'),
-      (s.isAr ? 'العمر' : 'Age', c.minAge > 0 ? '${c.minAge}+' : (s.isAr ? 'لكل الأعمار' : 'All ages')),
-      if (c.lang.isNotEmpty) (s.isAr ? 'اللغة' : 'Language', c.lang),
-    ];
-    return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-      ArtTile(c.motif, imageUrl: c.imageUrl, height: 140, radius: BorderRadius.circular(16)),
-      const SizedBox(height: 16),
-      Row(children: [
-        Expanded(child: Text(s.name(c), style: tt.headlineSmall?.copyWith(fontWeight: FontWeight.w700))),
-      ]),
-      const SizedBox(height: 6),
-      Text(c.description(s.lang), style: tt.bodyLarge?.copyWith(color: VK.ink2)),
-      const SizedBox(height: 14),
-      for (final r in rows)
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 6),
-          child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            SizedBox(width: 110, child: Text(r.$1, style: const TextStyle(color: VK.ink2))),
-            Expanded(child: Text(r.$2, style: const TextStyle(fontWeight: FontWeight.w600))),
-          ]),
-        ),
-      const SizedBox(height: 16),
-      Wrap(spacing: 10, runSpacing: 10, children: [
-        if (canAdd && s.trip != null)
-          FilledButton(
-            onPressed: () async {
-              Navigator.pop(ctx);
-              await showAddToTrip(context, id, occId: occId);
-            },
-            child: Text(s.t('addToTrip')),
+
+  return showModalBottomSheet<void>(
+    context: context,
+    isScrollControlled: true,
+    showDragHandle: false,
+    shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(24))),
+    builder: (ctx) {
+      final tt = Theme.of(ctx).textTheme;
+      final rows = <(String, String)>[
+        (c.isEvent ? (s.isAr ? 'المكان' : 'Venue') : (s.isAr ? 'المنطقة' : 'Area'),
+            c.isEvent ? venues[c.venue]!.name(s.lang) : s.area(c.area)),
+        if (occ != null) (s.isAr ? 'الموعد' : 'When', '${s.date(occ.date)}, ${s.time(occ.start)} – ${s.time(occ.end)}'),
+        if (occ != null) (s.isAr ? 'التوفر' : 'Availability', occ.seats > 0 ? s.t('seatsLeft', {'n': occ.seats}) : s.t('soldOut')),
+        (s.isAr ? 'المدة' : 'Duration', '${c.dur} ${s.isAr ? 'دقيقة' : 'min'}'),
+        (s.isAr ? 'السعر' : 'Price', '${s.kwd(c.price)} ${c.price > 0 ? s.t('perPerson') : ''}'),
+        (s.isAr ? 'العمر' : 'Age', c.minAge > 0 ? '${c.minAge}+' : (s.isAr ? 'لكل الأعمار' : 'All ages')),
+        if (c.lang.isNotEmpty) (s.isAr ? 'اللغة' : 'Language', c.lang),
+      ];
+
+      return SafeArea(
+        child: ConstrainedBox(
+          constraints: BoxConstraints(maxHeight: MediaQuery.sizeOf(ctx).height * .88),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              // ── Hero image ────────────────────────────────────────────────
+              Stack(
+                children: [
+                  ClipRRect(
+                    borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+                    child: c.imageUrl != null
+                        ? Image.network(
+                            c.imageUrl!,
+                            height: 220,
+                            width: double.infinity,
+                            fit: BoxFit.cover,
+                            filterQuality: FilterQuality.high,
+                            errorBuilder: (_, __, ___) => ArtTile(c.motif, height: 220),
+                          )
+                        : ArtTile(c.motif, height: 180),
+                  ),
+                  // drag handle pill on top of the image
+                  Positioned(
+                    top: 10, left: 0, right: 0,
+                    child: Center(
+                      child: Container(
+                        width: 36, height: 4,
+                        decoration: BoxDecoration(
+                          color: Colors.white.withValues(alpha: 0.60),
+                          borderRadius: BorderRadius.circular(2),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+
+              // ── Scrollable body ───────────────────────────────────────────
+              Flexible(
+                child: SingleChildScrollView(
+                  padding: EdgeInsets.fromLTRB(20, 16, 20, 20 + MediaQuery.viewInsetsOf(ctx).bottom),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Text(s.name(c), style: tt.headlineSmall?.copyWith(fontWeight: FontWeight.w700)),
+                      const SizedBox(height: 6),
+                      Text(c.description(s.lang), style: tt.bodyLarge?.copyWith(color: VK.ink2)),
+                      const SizedBox(height: 14),
+                      for (final r in rows)
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 6),
+                          child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                            SizedBox(width: 110, child: Text(r.$1, style: const TextStyle(color: VK.ink2))),
+                            Expanded(child: Text(r.$2, style: const TextStyle(fontWeight: FontWeight.w600))),
+                          ]),
+                        ),
+                      const SizedBox(height: 16),
+                      Wrap(spacing: 10, runSpacing: 10, children: [
+                        if (canAdd && s.trip != null)
+                          FilledButton(
+                            onPressed: () async {
+                              Navigator.pop(ctx);
+                              await showAddToTrip(context, id, occId: occId);
+                            },
+                            child: Text(s.t('addToTrip')),
+                          ),
+                        if (c.menuUrl != null)
+                          OutlinedButton.icon(
+                            onPressed: () => _open(c.menuUrl!),
+                            icon: const Icon(Icons.menu_book_outlined),
+                            label: Text(s.t('viewMenu')),
+                          ),
+                        OutlinedButton.icon(
+                          onPressed: () => _open(mapsUrl(c.lat, c.lng)),
+                          icon: const Icon(Icons.directions),
+                          label: Text(s.t('directions')),
+                        ),
+                        OutlinedButton.icon(
+                          onPressed: () {
+                            s.toggleFavorite(id);
+                            Navigator.pop(ctx);
+                          },
+                          icon: Icon(s.favorites.contains(id) ? Icons.favorite : Icons.favorite_border),
+                          label: Text(s.isAr ? 'احفظ' : 'Save'),
+                        ),
+                      ]),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
-        OutlinedButton.icon(
-          onPressed: () => _open(mapsUrl(c.lat, c.lng)),
-          icon: const Icon(Icons.directions),
-          label: Text(s.t('directions')),
         ),
-        OutlinedButton.icon(
-          onPressed: () {
-            s.toggleFavorite(id);
-            Navigator.pop(ctx);
-          },
-          icon: Icon(s.favorites.contains(id) ? Icons.favorite : Icons.favorite_border),
-          label: Text(s.isAr ? 'احفظ' : 'Save'),
-        ),
-      ]),
-    ]);
-  });
+      );
+    },
+  );
 }
 
 /* ---------- booking ---------- */
