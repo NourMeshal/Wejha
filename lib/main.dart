@@ -73,16 +73,20 @@ class _SplashAppState extends State<_SplashApp>
             final idx = (t * (_frames - 1)).floor().clamp(0, _frames - 1);
             final num = (idx + 1).toString().padLeft(2, '0');
 
-            final size = MediaQuery.sizeOf(context).shortestSide * 0.72;
+            final size = MediaQuery.sizeOf(context).shortestSide * 0.52;
             return Center(
               child: SizedBox(
                 width: size,
                 height: size,
-                child: Image.asset(
-                  'assets/images/splash_$num.png',
-                  fit: BoxFit.cover,
-                  filterQuality: FilterQuality.high,
-                  gaplessPlayback: true,
+                child: AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 90),
+                  child: Image.asset(
+                    'assets/images/splash_$num.png',
+                    key: ValueKey(num),
+                    fit: BoxFit.contain,
+                    filterQuality: FilterQuality.high,
+                    gaplessPlayback: true,
+                  ),
                 ),
               ),
             );
