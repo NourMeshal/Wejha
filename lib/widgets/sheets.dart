@@ -15,6 +15,123 @@ Future<void> _open(String url) async {
 
 String mapsUrl(double lat, double lng) => 'https://www.google.com/maps/dir/?api=1&destination=$lat,$lng';
 
+/* ─── Photo hero ─────────────────────────────────────────────────────────── */
+/// Full-width hero at the top of the detail sheet.
+/// Shows a swipeable PageView when [photos] are provided (restaurants),
+/// or a single image for events/places. Overlays logo badge + drag handle.
+class _PhotoHero extends StatefulWidget {
+  final Listing c;
+  const _PhotoHero(this.c);
+  @override
+  State<_PhotoHero> createState() => _PhotoHeroState();
+}
+
+class _PhotoHeroState extends State<_PhotoHero> {
+  late final PageController _ctrl;
+  int _page = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _ctrl = PageController();
+  }
+
+  @override
+  void dispose() {
+    _ctrl.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final c = widget.c;
+    final slides = [if (c.imageUrl != null) c.imageUrl!, ...c.photos];
+
+    Widget imageAt(String url) => Image.network(
+          url,
+          fit: BoxFit.cover,
+          width: double.infinity,
+          filterQuality: FilterQuality.high,
+          errorBuilder: (_, __, ___) => ArtTile(c.motif, height: 240),
+        );
+
+    final heroContent = slides.isEmpty
+        ? ArtTile(c.motif, height: 200)
+        : slides.length == 1
+            ? imageAt(slides[0])
+            : PageView.builder(
+                controller: _ctrl,
+                onPageChanged: (i) => setState(() => _page = i),
+                itemCount: slides.length,
+                itemBuilder: (_, i) => imageAt(slides[i]),
+              );
+
+    return Stack(
+      children: [
+        ClipRRect(
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+          child: SizedBox(height: 240, child: heroContent),
+        ),
+
+        // drag handle pill
+        Positioned(
+          top: 10, left: 0, right: 0,
+          child: Center(
+            child: Container(
+              width: 36, height: 4,
+              decoration: BoxDecoration(
+                color: Colors.white.withValues(alpha: 0.65),
+                borderRadius: BorderRadius.circular(2),
+              ),
+            ),
+          ),
+        ),
+
+        // restaurant logo badge
+        if (c.logoUrl != null)
+          Positioned(
+            bottom: slides.length > 1 ? 28 : 12,
+            left: 14,
+            child: Container(
+              constraints: const BoxConstraints(maxWidth: 90, maxHeight: 48),
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.20), blurRadius: 8, offset: const Offset(0, 2))],
+              ),
+              child: Image.network(
+                c.logoUrl!,
+                fit: BoxFit.contain,
+                filterQuality: FilterQuality.high,
+                errorBuilder: (_, __, ___) => const SizedBox.shrink(),
+              ),
+            ),
+          ),
+
+        // dot indicators
+        if (slides.length > 1)
+          Positioned(
+            bottom: 12, left: 0, right: 0,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: List.generate(slides.length, (i) => AnimatedContainer(
+                duration: const Duration(milliseconds: 220),
+                margin: const EdgeInsets.symmetric(horizontal: 3),
+                width: _page == i ? 18 : 6,
+                height: 6,
+                decoration: BoxDecoration(
+                  color: _page == i ? Colors.white : Colors.white.withValues(alpha: 0.55),
+                  borderRadius: BorderRadius.circular(3),
+                ),
+              )),
+            ),
+          ),
+      ],
+    );
+  }
+}
+
 Future<T?> _sheet<T>(BuildContext context, Widget Function(BuildContext) builder) {
   return showModalBottomSheet<T>(
     context: context,
@@ -66,37 +183,8 @@ Future<void> showDetails(BuildContext context, String id, {String? occId, bool c
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // ── Hero image ────────────────────────────────────────────────
-              Stack(
-                children: [
-                  ClipRRect(
-                    borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
-                    child: c.imageUrl != null
-                        ? Image.network(
-                            c.imageUrl!,
-                            height: 220,
-                            width: double.infinity,
-                            fit: BoxFit.cover,
-                            filterQuality: FilterQuality.high,
-                            errorBuilder: (_, __, ___) => ArtTile(c.motif, height: 220),
-                          )
-                        : ArtTile(c.motif, height: 180),
-                  ),
-                  // drag handle pill on top of the image
-                  Positioned(
-                    top: 10, left: 0, right: 0,
-                    child: Center(
-                      child: Container(
-                        width: 36, height: 4,
-                        decoration: BoxDecoration(
-                          color: Colors.white.withValues(alpha: 0.60),
-                          borderRadius: BorderRadius.circular(2),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+              // ── Hero image / photo gallery ────────────────────────────
+              _PhotoHero(c),
 
               // ── Scrollable body ───────────────────────────────────────────
               Flexible(

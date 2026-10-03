@@ -42,6 +42,8 @@ class Listing {
   final String? bookUrl;
   // imagery
   final String? imageUrl;
+  final String? logoUrl;
+  final List<String> photos; // swipeable gallery (dishes / interior shots)
   final String? menuUrl;
 
   const Listing({
@@ -77,6 +79,8 @@ class Listing {
     this.provider,
     this.bookUrl,
     this.imageUrl,
+    this.logoUrl,
+    this.photos = const [],
     this.menuUrl,
   });
 
@@ -252,7 +256,11 @@ final List<Listing> places = [
       meals: ['d'], hours: h(1020, 1440), except: {0: []},
       motif: 'plate', demo: true,
       provider: 'opentable', bookUrl: 'https://www.opentable.com/r/sintoho-al-mirqab-1',
-      imageUrl: 'https://images.pexels.com/photos/33712148/pexels-photo-33712148/free-photo-of-exquisite-nigiri-sushi-on-elegant-plate.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+      imageUrl: 'https://bazaar.town/wp-content/uploads/2021/05/1_KUW_437_1.jpg',
+      photos: [
+        'https://bazaar.town/wp-content/uploads/2021/05/5_KUW_577_1.jpg',
+        'https://bazaar.town/wp-content/uploads/2021/05/3_KUW_305_1.jpg',
+      ],
       menuUrl: 'https://www.fourseasons.com/kuwait/dining/restaurants/sintoho/',
       desc: 'Japanese and Southeast Asian at the 21st floor of the Four Seasons Hotel — robata grill, sushi and teppanyaki with panoramic city views. Reserve on OpenTable.',
       descAr: 'مطبخ ياباني وجنوب شرق آسيوي في الطابق ٢١ من فندق فور سيزونز — مشاوي روباتا وسوشي وتيباياكي مع إطلالات بانورامية. الحجز عبر OpenTable.'),
@@ -267,6 +275,11 @@ final List<Listing> places = [
       motif: 'plate', demo: false,
       provider: 'opentable', bookUrl: 'https://www.opentable.com/r/dai-forni-al-mirqab',
       imageUrl: 'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/11/cc/0a/02/dai-forni-restaurant.jpg?w=1200&h=900&s=1',
+      photos: [
+        'https://bazaar.town/wp-content/uploads/2021/05/6_KUW_650_1.jpg',
+        'https://bazaar.town/wp-content/uploads/2021/05/4_KUW_389_1.jpg',
+        'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/30/00/f9/98/caption.jpg?w=1200&h=900&s=1',
+      ],
       menuUrl: 'https://www.fourseasons.com/kuwait/dining/restaurants/dai-forni/',
       desc: 'Wood-fired pizzas and handmade pasta from three giant copper-sheathed ovens on the 21st floor of the Four Seasons. Casual yet elegant. Reserve on OpenTable.',
       descAr: 'بيتزا من الفرن الحطبي ومعكرونة يدوية من ثلاثة أفران نحاسية ضخمة في الطابق ٢١ من فور سيزونز. أجواء غير رسمية وأنيقة. الحجز عبر OpenTable.'),
@@ -282,6 +295,12 @@ final List<Listing> places = [
       motif: 'plate', demo: false,
       provider: 'opentable', bookUrl: 'https://www.opentable.com/r/jamawar-indian-restaurant-kuwait-city',
       imageUrl: 'https://qcqxcffgfdsqfrwwvabh.supabase.co/storage/v1/object/public/restaurants/jamawar-indian-restaurant-salmiya/images/jamawar-indian-restaurant-salmiya-warm-lighting-wooden-interior-dining-room.jpg',
+      photos: [
+        'https://qcqxcffgfdsqfrwwvabh.supabase.co/storage/v1/object/public/restaurants/jamawar-indian-restaurant-salmiya/images/jamawar-indian-restaurant-salmiya-spicy-chicken-tikka-side-salad.jpg',
+        'https://qcqxcffgfdsqfrwwvabh.supabase.co/storage/v1/object/public/restaurants/jamawar-indian-restaurant-salmiya/images/jamawar-indian-restaurant-salmiya-butter-chicken-naan-samosas-dining-table.jpg',
+        'https://qcqxcffgfdsqfrwwvabh.supabase.co/storage/v1/object/public/restaurants/jamawar-indian-restaurant-salmiya/images/jamawar-indian-restaurant-salmiya-biryani-copper-pot-lemon-soda.jpg',
+        'https://qcqxcffgfdsqfrwwvabh.supabase.co/storage/v1/object/public/restaurants/jamawar-indian-restaurant-salmiya/images/jamawar-indian-restaurant-salmiya-copper-thali-set-indian-dishes.jpg',
+      ],
       desc: 'Authentic Indian restaurant consistently rated among Kuwait City\'s top tables — kebabs, biryani and slow-cooked curries. Rated 4.9 on OpenTable.',
       descAr: 'مطعم هندي أصيل يُصنَّف باستمرار ضمن أفضل مطاعم الكويت — كباب وبيريانى وكاري مطبوخ ببطء. تقييم ٤.٩ على OpenTable.'),
   //
@@ -297,13 +316,56 @@ final List<Listing> places = [
       motif: 'plate', demo: false,
       provider: 'opentable', bookUrl: 'https://www.opentable.com/r/shabestan-iranian-restaurant-kuwait-city',
       imageUrl: 'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0e/98/75/ff/shabestan-iranian-restaurant.jpg?w=1200&h=900&s=1',
+      photos: [
+        'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0e/98/6a/53/shabestan-iranian-restaurant.jpg?w=1200&h=900&s=1',
+        'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/14/26/d5/e9/nargesi-kashkeh-e-badenjan.jpg?w=1200&h=900&s=1',
+        'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/16/60/80/ac/lamb-very-tasty-and-well.jpg?w=1200&h=900&s=1',
+      ],
       menuUrl: 'https://www.talabat.com/kuwait/shabestan',
       desc: 'Authentic Persian cuisine — freshly prepared grills and home-style dishes. Rated #14 of 564 Kuwait City restaurants on TripAdvisor. Reserve on OpenTable.',
       descAr: 'مطبخ إيراني أصيل — مشاوي طازجة وأطباق منزلية الطراز. مصنّف رقم ١٤ من ٥٦٤ مطعماً في الكويت على TripAdvisor. الحجز عبر OpenTable.'),
   //
-  Listing(id: 'freej-swaileh', type: ListingType.restaurant, en: 'Freej Swaileh', ar: 'فريج صويلح', cat: 'kuwaiti_food', tags: ['kuwaiti_food', 'culture'], area: 'Salmiya', lat: 29.3350, lng: 48.0650, dur: 75, price: 6, pop: .85, meals: ['b', 'l', 'd'], hours: h(420, 1440), motif: 'plate', imageUrl: 'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/12/3f/44/6f/ground-floor-dining-room.jpg?w=1200&h=900&s=1', menuUrl: 'https://www.freejswalieh.com/menu', desc: 'Home-style Kuwaiti dishes such as machboos.', descAr: 'أطباق كويتية منزلية مثل المچبوس.'),
-  Listing(id: 'dar-hamad', type: ListingType.restaurant, en: 'Dar Hamad', ar: 'دار حمد', cat: 'kuwaiti_food', tags: ['kuwaiti_food', 'fine_dining', 'culture'], area: 'Sharq', lat: 29.3870, lng: 47.9990, dur: 90, price: 16, pop: .75, meals: ['l', 'd'], hours: h(720, 1410), motif: 'plate', imageUrl: 'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/24/67/ee/74/inside-the-restaurant.jpg?w=1200&h=900&s=1', menuUrl: 'https://www.orderdarhamad.com/en', desc: 'Kuwaiti and Gulf cooking near the waterfront.', descAr: 'مطبخ كويتي وخليجي قرب الواجهة البحرية.'),
-  Listing(id: 'mais-alghanim', type: ListingType.restaurant, en: 'Mais Alghanim', ar: 'ميس الغانم', cat: 'kuwaiti_food', tags: ['kuwaiti_food'], area: 'Dasman', lat: 29.3880, lng: 48.0025, dur: 75, price: 9, indoor: false, pop: .8, meals: ['l', 'd'], hours: h(720, 1440), motif: 'plate', imageUrl: 'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0e/79/d3/8d/interior.jpg?w=1200&h=900&s=1', menuUrl: 'https://qrmenu.maisalghanim.com/?b=5948', desc: 'A long-running Arabic grill by the sea near Kuwait Towers.', descAr: 'مطعم مشويات عربي عريق على البحر قرب الأبراج.'),
+  Listing(id: 'freej-swaileh', type: ListingType.restaurant, en: 'Freej Swaileh', ar: 'فريج صويلح',
+      cat: 'kuwaiti_food', tags: ['kuwaiti_food', 'culture'],
+      area: 'Salmiya', lat: 29.3350, lng: 48.0650,
+      dur: 75, price: 6, pop: .85, meals: ['b', 'l', 'd'], hours: h(420, 1440), motif: 'plate',
+      imageUrl: 'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/12/3f/44/6f/ground-floor-dining-room.jpg?w=1200&h=900&s=1',
+      logoUrl: 'https://static.wixstatic.com/media/b94ea9_8b0f8df6625143ef8bab5a72c546d41c~mv2.png',
+      photos: [
+        'https://static.wixstatic.com/media/b94ea9_864b54a7acdf4b04a2df48147338abd2~mv2.jpeg',
+        'https://static.wixstatic.com/media/b94ea9_819d3a98ada844f692f5cfe0f46fd69f~mv2.jpg',
+        'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/16/82/32/df/chicken-makboos.jpg?w=1200&h=900&s=1',
+        'https://static.wixstatic.com/media/b94ea9_d7e500aca89746e29139fdd900971306~mv2.jpeg',
+      ],
+      menuUrl: 'https://www.freejswalieh.com/menu',
+      desc: 'Home-style Kuwaiti dishes such as machboos.', descAr: 'أطباق كويتية منزلية مثل المچبوس.'),
+  Listing(id: 'dar-hamad', type: ListingType.restaurant, en: 'Dar Hamad', ar: 'دار حمد',
+      cat: 'kuwaiti_food', tags: ['kuwaiti_food', 'fine_dining', 'culture'],
+      area: 'Sharq', lat: 29.3870, lng: 47.9990,
+      dur: 90, price: 16, pop: .75, meals: ['l', 'd'], hours: h(720, 1410), motif: 'plate',
+      imageUrl: 'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/24/67/ee/74/inside-the-restaurant.jpg?w=1200&h=900&s=1',
+      logoUrl: 'https://static.zyda.com/b6bxfcpjnk9bvpycf9iwe3yb72rc',
+      photos: [
+        'https://static.zyda.com/variants/ec26hobwy128127xpv4oa6f1hfs5/327db254c782280f8981701dd59d82fc59ea5221ea385e9afd00182eea055f79',
+        'https://static.zyda.com/variants/eg794342irk3odnjjtt5t6ll6v9n/327db254c782280f8981701dd59d82fc59ea5221ea385e9afd00182eea055f79',
+        'https://static.zyda.com/variants/0x3b1fr3oewdmdxhjpbxjw6fdm7s/327db254c782280f8981701dd59d82fc59ea5221ea385e9afd00182eea055f79',
+        'https://static.zyda.com/variants/8xw69pdlt34j10gzxl2odzpn4iwx/327db254c782280f8981701dd59d82fc59ea5221ea385e9afd00182eea055f79',
+      ],
+      menuUrl: 'https://www.orderdarhamad.com/en',
+      desc: 'Kuwaiti and Gulf cooking near the waterfront.', descAr: 'مطبخ كويتي وخليجي قرب الواجهة البحرية.'),
+  Listing(id: 'mais-alghanim', type: ListingType.restaurant, en: 'Mais Alghanim', ar: 'ميس الغانم',
+      cat: 'kuwaiti_food', tags: ['kuwaiti_food'],
+      area: 'Dasman', lat: 29.3880, lng: 48.0025,
+      dur: 75, price: 9, indoor: false, pop: .8, meals: ['l', 'd'], hours: h(720, 1440), motif: 'plate',
+      imageUrl: 'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0e/79/d3/8d/interior.jpg?w=1200&h=900&s=1',
+      logoUrl: 'https://www.maisalghanim.com/wp-content/uploads/2019/08/logo.png',
+      photos: [
+        'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/08/d0/48/0a/mais-alghanim.jpg?w=1200&h=1200&s=1',
+        'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/14/06/a8/54/safary.jpg?w=1200&h=-1&s=1',
+        'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/14/74/7e/54/photo2jpg.jpg?w=1200&h=900&s=1',
+      ],
+      menuUrl: 'https://qrmenu.maisalghanim.com/?b=5948',
+      desc: 'A long-running Arabic grill by the sea near Kuwait Towers.', descAr: 'مطعم مشويات عربي عريق على البحر قرب الأبراج.'),
   Listing(id: 'souq-cafe', type: ListingType.restaurant, en: 'Karak & gahwa in the souq', ar: 'كرك وقهوة في السوق', cat: 'cafes', tags: ['cafes', 'kuwaiti_food', 'culture'], area: 'Kuwait City', lat: 29.3705, lng: 47.9740, dur: 45, price: 2, indoor: false, pop: .7, meals: ['b', 's'], hours: h(420, 1380), motif: 'cup', imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Karak_tea_in_Kuwait_2.jpg/500px-Karak_tea_in_Kuwait_2.jpg', desc: 'Karak tea and Arabic coffee inside Souq Al-Mubarakiya.', descAr: 'شاي كرك وقهوة عربية داخل سوق المباركية.'),
   Listing(id: 'fine-waterfront', type: ListingType.restaurant, en: 'Waterfront fine dining', ar: 'مطعم راقٍ على البحر', cat: 'fine_dining', tags: ['fine_dining'], area: 'Salmiya', lat: 29.3445, lng: 48.0880, dur: 105, price: 38, pop: .6, meals: ['d'], hours: h(1140, 1410), motif: 'plate', demo: true, imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Sunset_from_Umm_al_maradem_island_Kuwait.jpg/960px-Sunset_from_Umm_al_maradem_island_Kuwait.jpg', desc: 'Tasting menu with Gulf views. Demo listing.', descAr: 'قائمة تذوق بإطلالة على الخليج. قائمة تجريبية.'),
   Listing(id: 'kw-breakfast', type: ListingType.restaurant, en: 'Kuwaiti breakfast house', ar: 'بيت الريوق الكويتي', cat: 'kuwaiti_food', tags: ['kuwaiti_food', 'culture'], area: 'Kuwait City', lat: 29.3720, lng: 47.9840, dur: 60, price: 4, pop: .6, meals: ['b'], hours: h(390, 720), motif: 'plate', demo: true, imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/Balaleet_2019.jpg/960px-Balaleet_2019.jpg', desc: 'Balaleet, chami cheese and fresh bread. Demo listing.', descAr: 'بلاليط وجامي وخبز طازج. قائمة تجريبية.'),
@@ -311,7 +373,14 @@ final List<Listing> places = [
 ];
 
 final List<Listing> events = [
-  _ev(id: 'ev-strings', en: 'Gulf strings evening', ar: 'أمسية أوتار الخليج', cat: 'concerts', tags: ['concerts', 'live_music', 'culture'], venue: 'jacc', dur: 120, days: [4, 6], times: [1200], price: 15, minAge: 6, lang: 'Instrumental', pop: .8, motif: 'stage', imageUrl: 'https://www.jacc-kw.com/core/wp-content/uploads/2026/09/Website_Eventname_Al_Ekhwa_Band_EN_606.jpg', desc: 'Oud, qanun and orchestra playing Gulf music.', descAr: 'عود وقانون وأوركسترا في ألحان خليجية.'),
+  _ev(id: 'ev-strings', en: 'Al Ekhwa Band — Amphitheatre', ar: 'فرقة الإخوة — الأمفيثياتر',
+      cat: 'concerts', tags: ['concerts', 'live_music', 'culture'], venue: 'jacc',
+      dur: 120, days: [4], times: [1230], price: 12, minAge: 6,
+      lang: 'Arabic', pop: .80, months: [11], motif: 'stage',
+      imageUrl: 'https://www.jacc-kw.com/core/wp-content/uploads/2026/09/Website_Eventname_Al_Ekhwa_Band_EN_606.jpg',
+      desc: 'Al Ekhwa Band perform Gulf classics under the open sky at the JACC Amphitheatre. Nov 6, 8:30 PM.',
+      descAr: 'فرقة الإخوة تقدم روائع الطرب الخليجي في الأمفيثياتر المفتوح بمركز جابر. ٦ نوفمبر، ٨:٣٠ م.',
+      demo: true),
   _ev(id: 'ev-arena-concert', en: 'Headline concert at The Arena', ar: 'حفل رئيسي في ذا أرينا', cat: 'concerts', tags: ['concerts', 'live_music'], venue: 'arena', dur: 150, days: [5], times: [1290], price: 25, lang: 'Arabic', pop: .9, motif: 'stage', desc: 'Example listing for an Arena concert.', descAr: 'مثال لحفل في ذا أرينا.'),
   _ev(id: 'ev-play', en: 'Kuwaiti comedy play', ar: 'مسرحية كوميدية كويتية', cat: 'theatre', tags: ['theatre', 'comedy', 'culture'], venue: 'theatre', dur: 120, days: [4, 5, 6], times: [1260], price: 12, minAge: 8, lang: 'Arabic', pop: .75, motif: 'stage', imageUrl: 'https://kuwaittimes.com/kuwaittimes/uploads/images/2026/09/17/444909.jpg', desc: 'A local comedy in Kuwaiti dialect.', descAr: 'مسرحية كوميدية باللهجة الكويتية.'),
   _ev(id: 'ev-musical', en: 'Family musical', ar: 'مسرحية غنائية للعائلة', cat: 'theatre', tags: ['theatre', 'family', 'kids'], venue: 'jacc', dur: 90, days: [5, 6], times: [1020], price: 8, child: 5, minAge: 3, lang: 'Arabic & English', pop: .7, motif: 'stage', imageUrl: 'https://www.jacc-kw.com/core/wp-content/uploads/2026/09/Website_Eventname_Whispers_of_the_Keys_EN_598.jpg', desc: 'A bilingual musical for children 3 and up.', descAr: 'مسرحية غنائية ثنائية اللغة للأطفال من سن ٣.'),
@@ -376,6 +445,61 @@ final List<Listing> events = [
       desc: 'The classic Christmas film screened live with John Williams\' Academy Award–nominated score performed by the Qatar Philharmonic Orchestra. Two showtimes: 4:00 PM & 8:30 PM. Tickets from 15 KWD.',
       descAr: 'الفيلم الكلاسيكي على الشاشة الكبيرة مع موسيقى جون ويليامز حيّة على يد أوركسترا قطر الفيلهارمونية. عرضان: ٤:٠٠ م و٨:٣٠ م. التذاكر تبدأ من ١٥ د.ك.',
       demo: false),
+  // --- Additional confirmed JACC events (2026/2027 season, jacc-kw.com) ---
+  // The Eighties… The Knockout — Oct 12–17 2026, National Theatre, two shows daily
+  _ev(id: 'ev-eighties', en: 'The Eighties… The Knockout', ar: 'الثمانينيات... الضربة القاضية',
+      cat: 'theatre', tags: ['theatre', 'comedy', 'culture'], venue: 'jacc',
+      dur: 120, days: [1, 2, 3, 4, 5, 6], times: [960, 1230], price: 12, minAge: 8,
+      lang: 'Arabic', pop: .80, months: [10], motif: 'stage',
+      imageUrl: 'https://www.jacc-kw.com/core/wp-content/uploads/2026/09/Website_Eventname_The_Eighties_EN_599.jpg',
+      desc: 'An Arabic theatrical show revisiting the spirit and hits of the 1980s, with live music and comedy. Two shows nightly: 4 PM and 8:30 PM.',
+      descAr: 'عرض مسرحي عربي يستعيد روح وأغاني الثمانينيات مع موسيقى حية وكوميديا. عرضان يومياً: ٤ م و٨:٣٠ م.',
+      demo: true),
+  // Samri and Qadri with Tareq Al-Khurayef — Oct 19 2026, Concert Hall
+  _ev(id: 'ev-samri', en: 'Samri & Qadri — Tareq Al-Khurayef', ar: 'سامري وقدري — طارق الخريّف',
+      cat: 'concerts', tags: ['concerts', 'live_music', 'culture'], venue: 'jacc',
+      dur: 120, days: [1], times: [1200], price: 10, minAge: 5,
+      lang: 'Arabic', pop: .75, months: [10], motif: 'stage',
+      imageUrl: 'https://www.jacc-kw.com/core/wp-content/uploads/2026/09/Website_Eventname_Samri_Qadri_EN_600.jpg',
+      desc: 'Kuwaiti artist Tareq Al-Khurayef performs traditional samri and qadri folk songs at the Sheikh Jaber Al-Ali Concert Hall.',
+      descAr: 'الفنان الكويتي طارق الخريّف يقدم أغاني السامري والقدري التراثية في قاعة الشيخ جابر العلي للحفلات.',
+      demo: true),
+  // Sahabet Kaif — Oct 21 2026, Recital Hall
+  _ev(id: 'ev-sahabet-kaif', en: 'Sahabet Kaif', ar: 'صاحبة كيف',
+      cat: 'concerts', tags: ['concerts', 'live_music'], venue: 'jacc',
+      dur: 120, days: [3], times: [1140], price: 10, minAge: 5,
+      lang: 'Arabic', pop: .72, months: [10], motif: 'stage',
+      imageUrl: 'https://www.jacc-kw.com/core/wp-content/uploads/2026/09/Website_Eventname_Sahabet_Kaif_EN_602.jpg',
+      desc: 'An evening of Arabic song at the JACC Recital Hall.',
+      descAr: 'أمسية غنائية عربية في قاعة الاستعراض بمركز جابر الثقافي.',
+      demo: true),
+  // Two Songs in One — Oct 28 2026, Concert Hall
+  _ev(id: 'ev-two-songs', en: 'Two Songs in One', ar: 'أغنيتان في واحدة',
+      cat: 'concerts', tags: ['concerts', 'live_music', 'culture'], venue: 'jacc',
+      dur: 120, days: [3], times: [1200], price: 10, minAge: 5,
+      lang: 'Arabic', pop: .74, months: [10], motif: 'stage',
+      imageUrl: 'https://www.jacc-kw.com/core/wp-content/uploads/2026/09/Website_Eventname_Two_Songs_in_One_EN_603.jpg',
+      desc: 'A concert celebrating classic Arabic songs, performed live at the Sheikh Jaber Al-Ali Concert Hall.',
+      descAr: 'حفل يحتفي بأغاني الطرب الكلاسيكي يقام في قاعة الشيخ جابر العلي للحفلات.',
+      demo: true),
+  // Mai Farouk — Nov 5 2026, National Theatre
+  _ev(id: 'ev-mai-farouk', en: 'Mai Farouk', ar: 'مي فاروق',
+      cat: 'concerts', tags: ['concerts', 'live_music'], venue: 'jacc',
+      dur: 120, days: [4], times: [1230], price: 15, minAge: 6,
+      lang: 'Arabic', pop: .82, months: [11], motif: 'stage',
+      imageUrl: 'https://www.jacc-kw.com/core/wp-content/uploads/2026/09/Website_Eventname_Mai_Farouk_EN_605.jpg',
+      desc: 'Egyptian singer Mai Farouk performs at the JACC National Theatre.',
+      descAr: 'المطربة المصرية مي فاروق تحيي حفلها في المسرح الوطني بمركز جابر الثقافي.',
+      demo: true),
+  // Víctor Espínola — Nov 7 2026, Amphitheatre
+  _ev(id: 'ev-espinola', en: 'Víctor Espínola — Amphitheatre', ar: 'فيكتور إسبينولا — الأمفيثياتر',
+      cat: 'concerts', tags: ['concerts', 'live_music'], venue: 'jacc',
+      dur: 90, days: [6], times: [1200], price: 8, minAge: 5,
+      lang: 'Instrumental', pop: .68, months: [11], motif: 'stage',
+      imageUrl: 'https://www.jacc-kw.com/core/wp-content/uploads/2026/10/Website_Eventname_V%C3%ADctor_Esp%C3%ADnola_EN_607.jpg',
+      desc: 'World-music harpist Víctor Espínola performs under the open sky at the JACC Amphitheatre.',
+      descAr: 'عازف القيثارة العالمي فيكتور إسبينولا يقدم عرضه في الأمفيثياتر المفتوح بمركز جابر الثقافي.',
+      demo: true),
   _ev(id: 'ev-kids-science', en: 'Kids science show', ar: 'عرض علمي للأطفال', cat: 'family', tags: ['family', 'kids'], venue: 'sci', dur: 60, days: [5, 6], times: [660], price: 3, child: 3, minAge: 4, pop: .6, motif: 'star', imageUrl: 'https://images.pexels.com/photos/8923368/pexels-photo-8923368.jpeg?auto=compress&cs=tinysrgb&w=800', desc: 'Live experiments with lots of foam.', descAr: 'تجارب حية مليئة بالرغوة.'),
   _ev(id: 'ev-stars', en: 'Desert stargazing night', ar: 'ليلة رصد النجوم في البر', cat: 'desert', tags: ['desert', 'adventure', 'photography'], venue: 'kabd', dur: 180, days: [4, 5], times: [1140], price: 30, child: 15, minAge: 6, indoor: false, acc: false, months: [11, 12, 1, 2, 3], pop: .65, motif: 'dunes', imageUrl: 'https://images.pexels.com/photos/8357639/pexels-photo-8357639.jpeg?auto=compress&cs=tinysrgb&w=800', desc: 'Telescopes and a guide away from city lights.', descAr: 'تلسكوبات ومرشد بعيداً عن أضواء المدينة.'),
 ];
