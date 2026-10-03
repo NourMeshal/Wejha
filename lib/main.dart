@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -10,8 +12,7 @@ import 'screens/trip_screen.dart';
 import 'state/app_state.dart';
 import 'theme.dart';
 
-// 14 frames × ~200 ms each = 2800 ms animation, then hold frame 14 briefly.
-const _kSplashMs = 3000;
+const _kSplashMs = 3200;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,10 +37,6 @@ class _SplashApp extends StatefulWidget {
 
 class _SplashAppState extends State<_SplashApp>
     with SingleTickerProviderStateMixin {
-  static const _frames = 14; // frame 15 (app-icon square) excluded
-  // Frames play over first 90% of duration, then hold on frame 14 briefly.
-  static const _playWindow = 0.90;
-
   late final AnimationController _ctrl;
 
   @override
@@ -57,8 +54,49 @@ class _SplashAppState extends State<_SplashApp>
     super.dispose();
   }
 
+  Animation<double> _interval(double t0, double t1,
+          {Curve curve = Curves.linear}) =>
+      CurvedAnimation(parent: _ctrl, curve: Interval(t0, t1, curve: curve));
+
   @override
   Widget build(BuildContext context) {
+    final logoSize = MediaQuery.sizeOf(context).shortestSide * 0.46;
+
+    // ── Timing (fractions of 3200 ms) ────────────────────────────────────
+    // Spark        0.00 – 0.14
+    // Arc draw     0.08 – 0.44
+    // Arc fade out 0.40 – 0.58
+    // Logo reveal  0.38 – 0.62
+    // BG glow      0.28 – 0.70
+    // Plane        0.62 – 0.97
+
+    final sparkOpacity = TweenSequence([
+      TweenSequenceItem(tween: Tween(begin: 0.0, end: 1.0), weight: 35),
+      TweenSequenceItem(tween: ConstantTween(1.0),           weight: 20),
+      TweenSequenceItem(tween: Tween(begin: 1.0, end: 0.0), weight: 45),
+    ]).animate(_interval(0.00, 0.14, curve: Curves.easeInOut));
+
+    final arcProgress = _interval(0.08, 0.44, curve: Curves.easeInOut);
+
+    final arcOpacity = TweenSequence([
+      TweenSequenceItem(tween: Tween(begin: 0.0, end: 1.0), weight: 10),
+      TweenSequenceItem(tween: ConstantTween(1.0),           weight: 55),
+      TweenSequenceItem(tween: Tween(begin: 1.0, end: 0.0), weight: 35),
+    ]).animate(_interval(0.08, 0.58, curve: Curves.easeInOut));
+
+    final bgGlow  = _interval(0.28, 0.70, curve: Curves.easeOut);
+
+    final logoFade  = _interval(0.38, 0.62, curve: Curves.easeOut);
+    final logoScale = Tween<double>(begin: 0.80, end: 1.0).animate(
+        _interval(0.38, 0.64, curve: Curves.easeOutBack));
+
+    final planeProgress = _interval(0.62, 0.90, curve: Curves.easeInOut);
+    final planeOpacity  = TweenSequence([
+      TweenSequenceItem(tween: Tween(begin: 0.0, end: 1.0), weight: 12),
+      TweenSequenceItem(tween: ConstantTween(1.0),           weight: 68),
+      TweenSequenceItem(tween: Tween(begin: 1.0, end: 0.0), weight: 20),
+    ]).animate(_interval(0.62, 0.97, curve: Curves.easeInOut));
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: buildTheme(),
@@ -67,34 +105,280 @@ class _SplashAppState extends State<_SplashApp>
         backgroundColor: VK.bg,
         body: AnimatedBuilder(
           animation: _ctrl,
-          builder: (context, _) {
-            // Map controller value → frame index 0–14
-            final t = (_ctrl.value / _playWindow).clamp(0.0, 1.0);
-            final idx = (t * (_frames - 1)).floor().clamp(0, _frames - 1);
-            final num = (idx + 1).toString().padLeft(2, '0');
+          builder: (context, _) => Stack(
+            fit: StackFit.expand,
+            alignment: Alignment.center,
+            children: [
 
-            final size = MediaQuery.sizeOf(context).shortestSide * 0.52;
-            return Center(
-              child: SizedBox(
-                width: size,
-                height: size,
-                child: AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 90),
-                  child: Image.asset(
-                    'assets/images/splash_$num.png',
-                    key: ValueKey(num),
-                    fit: BoxFit.contain,
-                    filterQuality: FilterQuality.high,
-                    gaplessPlayback: true,
+              // Radial background glow
+              Center(
+                child: Opacity(
+                  opacity: (bgGlow.value * 0.40).clamp(0.0, 1.0),
+                  child: Container(
+                    width: logoSize * 2.4,
+                    height: logoSize * 2.4,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      gradient: RadialGradient(
+                        colors: [
+                          VK.sea.withValues(alpha: 0.45),
+                          VK.sea.withValues(alpha: 0.08),
+                          VK.bg,
+                        ],
+                        stops: const [0.0, 0.45, 1.0],
+                      ),
+                    ),
                   ),
                 ),
               ),
-            );
-          },
+
+              // Arc drawing
+              Center(
+                child: Opacity(
+                  opacity: arcOpacity.value.clamp(0.0, 1.0),
+                  child: CustomPaint(
+                    size: Size(logoSize, logoSize),
+                    painter: _ArcPainter(progress: arcProgress.value),
+                  ),
+                ),
+              ),
+
+              // Leading spark
+              Center(
+                child: Opacity(
+                  opacity: sparkOpacity.value.clamp(0.0, 1.0),
+                  child: Container(
+                    width: 10,
+                    height: 10,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          color: VK.sea.withValues(alpha: 0.9),
+                          blurRadius: 28,
+                          spreadRadius: 10,
+                        ),
+                        BoxShadow(
+                          color: Colors.white.withValues(alpha: 0.7),
+                          blurRadius: 8,
+                          spreadRadius: 2,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+
+              // Logo PNG reveal
+              Center(
+                child: Opacity(
+                  opacity: logoFade.value.clamp(0.0, 1.0),
+                  child: Transform.scale(
+                    scale: logoScale.value,
+                    child: Image.asset(
+                      'assets/images/logo_icon.png',
+                      width: logoSize,
+                      height: logoSize,
+                      filterQuality: FilterQuality.high,
+                    ),
+                  ),
+                ),
+              ),
+
+              // Airplane flyby
+              Center(
+                child: Opacity(
+                  opacity: planeOpacity.value.clamp(0.0, 1.0),
+                  child: CustomPaint(
+                    size: Size(logoSize, logoSize),
+                    painter: _PlanePainter(
+                      progress: planeProgress.value,
+                      logoSize: logoSize,
+                    ),
+                  ),
+                ),
+              ),
+
+            ],
+          ),
         ),
       ),
     );
   }
+}
+
+/* ─── Arc painter ────────────────────────────────────────────────────────── */
+
+class _ArcPainter extends CustomPainter {
+  final double progress;
+  const _ArcPainter({required this.progress});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    if (progress <= 0) return;
+
+    final centre = Offset(size.width * 0.50, size.height * 0.355);
+    final radius = size.width * 0.295;
+    const startAngle = -math.pi * 0.72;
+    const totalSweep = math.pi * 1.67;
+    final sweep = totalSweep * progress;
+    final rect = Rect.fromCircle(center: centre, radius: radius);
+
+    // Outer soft glow
+    canvas.drawArc(rect, startAngle, sweep, false,
+        Paint()
+          ..color = VK.sea.withValues(alpha: 0.18)
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 22
+          ..strokeCap = StrokeCap.round
+          ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 14));
+
+    // Mid glow
+    canvas.drawArc(rect, startAngle, sweep, false,
+        Paint()
+          ..color = VK.sea.withValues(alpha: 0.55)
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 7
+          ..strokeCap = StrokeCap.round
+          ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 5));
+
+    // Core line
+    canvas.drawArc(rect, startAngle, sweep, false,
+        Paint()
+          ..color = VK.sea
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 2.5
+          ..strokeCap = StrokeCap.round);
+
+    // Leading spark dot
+    if (progress > 0.03) {
+      final leadAngle = startAngle + sweep;
+      final dx = centre.dx + radius * math.cos(leadAngle);
+      final dy = centre.dy + radius * math.sin(leadAngle);
+      canvas.drawCircle(Offset(dx, dy), 11,
+          Paint()
+            ..color = Colors.white.withValues(alpha: 0.3)
+            ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 12));
+      canvas.drawCircle(Offset(dx, dy), 5,
+          Paint()
+            ..color = Colors.white.withValues(alpha: 0.85)
+            ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 4));
+      canvas.drawCircle(Offset(dx, dy), 2.2,
+          Paint()..color = Colors.white);
+    }
+  }
+
+  @override
+  bool shouldRepaint(_ArcPainter old) => old.progress != progress;
+}
+
+/* ─── Plane painter ──────────────────────────────────────────────────────── */
+
+class _PlanePainter extends CustomPainter {
+  final double progress;
+  final double logoSize;
+  const _PlanePainter({required this.progress, required this.logoSize});
+
+  Offset _bez(Offset p0, Offset c1, Offset c2, Offset p3, double t) {
+    final mt = 1 - t;
+    return Offset(
+      mt * mt * mt * p0.dx + 3 * mt * mt * t * c1.dx +
+          3 * mt * t * t * c2.dx + t * t * t * p3.dx,
+      mt * mt * mt * p0.dy + 3 * mt * mt * t * c1.dy +
+          3 * mt * t * t * c2.dy + t * t * t * p3.dy,
+    );
+  }
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    if (progress <= 0) return;
+
+    final w = size.width;
+    final h = size.height;
+
+    // Bezier path: bottom-left → upper-right, mirrors the logo's swoosh arc
+    final p0 = Offset(-w * 0.60,  h * 0.70);
+    final c1 = Offset(-w * 0.15,  h * 0.42);
+    final c2 = Offset( w * 0.30,  h * 0.05);
+    final p3 = Offset( w * 0.82, -h * 0.30);
+
+    // Trail
+    final trailStart = math.max(0.0, progress - 0.40);
+    final trailPath = Path();
+    bool first = true;
+    for (var i = 0; i <= 40; i++) {
+      final t = trailStart + (progress - trailStart) * i / 40;
+      final pt = _bez(p0, c1, c2, p3, t);
+      final gx = pt.dx + w / 2, gy = pt.dy + h / 2;
+      if (first) {
+        trailPath.moveTo(gx, gy);
+        first = false;
+      } else {
+        trailPath.lineTo(gx, gy);
+      }
+    }
+    canvas.drawPath(trailPath,
+        Paint()
+          ..color = VK.sea.withValues(alpha: 0.28)
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 1.6
+          ..strokeCap = StrokeCap.round);
+
+    // Plane position & angle
+    final pos   = _bez(p0, c1, c2, p3, progress);
+    final ahead = _bez(p0, c1, c2, p3, math.min(1.0, progress + 0.025));
+    final angle = math.atan2(ahead.dy - pos.dy, ahead.dx - pos.dx);
+
+    canvas.save();
+    canvas.translate(pos.dx + w / 2, pos.dy + h / 2);
+    canvas.rotate(angle);
+
+    final s = logoSize * 0.13;
+
+    // Glow halo
+    canvas.drawOval(
+      Rect.fromCenter(center: Offset.zero, width: s * 1.2, height: s * 0.5),
+      Paint()
+        ..color = VK.sea.withValues(alpha: 0.35)
+        ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 10));
+
+    // Fuselage
+    final body = Path()
+      ..moveTo( s * 0.52,  0)
+      ..lineTo(-s * 0.30, -s * 0.13)
+      ..lineTo(-s * 0.12,  0)
+      ..lineTo(-s * 0.30,  s * 0.13)
+      ..close();
+
+    // Wings
+    final lwing = Path()
+      ..moveTo( s * 0.06,  0)
+      ..lineTo(-s * 0.08, -s * 0.36)
+      ..lineTo(-s * 0.24, -s * 0.36)
+      ..lineTo(-s * 0.22, -s * 0.16)
+      ..close();
+
+    final rwing = Path()
+      ..moveTo( s * 0.06,  0)
+      ..lineTo(-s * 0.08,  s * 0.36)
+      ..lineTo(-s * 0.24,  s * 0.36)
+      ..lineTo(-s * 0.22,  s * 0.16)
+      ..close();
+
+    final paint = Paint()
+      ..color = Colors.white.withValues(alpha: 0.92)
+      ..style = PaintingStyle.fill;
+
+    canvas.drawPath(body,  paint);
+    canvas.drawPath(lwing, paint);
+    canvas.drawPath(rwing, paint);
+
+    canvas.restore();
+  }
+
+  @override
+  bool shouldRepaint(_PlanePainter old) => old.progress != progress;
 }
 
 /* ─── Main app ───────────────────────────────────────────────────────────── */
@@ -131,18 +415,14 @@ class Shell extends StatelessWidget {
   Widget build(BuildContext context) {
     final s = AppScope.of(context);
     const pages = [
-      HomeScreen(),
-      DiscoverScreen(),
-      TripScreen(),
-      ConciergeScreen(),
-      ProfileScreen(),
+      HomeScreen(), DiscoverScreen(), TripScreen(), ConciergeScreen(), ProfileScreen(),
     ];
     final dests = [
-      (Icons.home_outlined,        Icons.home,         s.t('home')),
-      (Icons.explore_outlined,     Icons.explore,      s.t('discover')),
-      (Icons.luggage_outlined,     Icons.luggage,      s.t('myTrip')),
-      (Icons.chat_bubble_outline,  Icons.chat_bubble,  s.t('concierge')),
-      (Icons.person_outline,       Icons.person,       s.t('profile')),
+      (Icons.home_outlined,       Icons.home,        s.t('home')),
+      (Icons.explore_outlined,    Icons.explore,     s.t('discover')),
+      (Icons.luggage_outlined,    Icons.luggage,     s.t('myTrip')),
+      (Icons.chat_bubble_outline, Icons.chat_bubble, s.t('concierge')),
+      (Icons.person_outline,      Icons.person,      s.t('profile')),
     ];
     final wide = MediaQuery.sizeOf(context).width >= 900;
     final body = SafeArea(child: IndexedStack(index: s.tab, children: pages));
@@ -162,7 +442,7 @@ class Shell extends StatelessWidget {
             destinations: [
               for (final d in dests)
                 NavigationRailDestination(
-                  icon: Icon(d.$1), selectedIcon: Icon(d.$2), label: Text(d.$3)),
+                    icon: Icon(d.$1), selectedIcon: Icon(d.$2), label: Text(d.$3)),
             ],
           ),
           const VerticalDivider(width: 1),
@@ -178,7 +458,7 @@ class Shell extends StatelessWidget {
         destinations: [
           for (final d in dests)
             NavigationDestination(
-              icon: Icon(d.$1), selectedIcon: Icon(d.$2), label: d.$3),
+                icon: Icon(d.$1), selectedIcon: Icon(d.$2), label: d.$3),
         ],
       ),
     );
